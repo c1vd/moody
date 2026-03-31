@@ -1,0 +1,12 @@
+services:
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb_moody
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: superpassword1        # Set a strong password
+      MARIADB_DATABASE: moodydb               # Optional: auto-create a database
+    ports:
+      - "3306:3306"
+    tmpfs:
+      - /var/lib/mysql:rw,noexec,nosuid,size=512m   # Data stored in RAM
