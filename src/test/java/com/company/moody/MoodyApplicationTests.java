@@ -1,24 +1,28 @@
 package com.company.moody;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 
-import com.company.moody.entities.Mood;
-import com.company.moody.entities.Mood.MoodType;
-import com.company.moody.repositories.MoodRepository;
+import com.company.moody.dto.UserDto;
+import com.company.moody.services.UserService;
 
-
-@DataJpaTest
+@SpringBootTest
 class MoodyApplicationTests {
 	@Autowired
-	private MoodRepository moodRepository;
+	private UserService userService;
 	@Test
-	public void testNewMoodSave(){
-		var mood = new Mood(MoodType.GOOD, "");
-		moodRepository.save(mood);
+	void shouldNotSaveUserWithExistingName(){
+		var user1 = new UserDto("JohnDoe", "SuperWeakPassword1");
+		var user2 = new UserDto("JohnDoe", "SuperWeakPassword2");
 
-		System.out.println("TEST");
+		assertEquals("JohnDoe", userService.register(user1).getUsername());
+		assertEquals(null, userService.register(user1));
+		assertEquals(null, userService.register(user2));
 	}
 
+
+	
 }
